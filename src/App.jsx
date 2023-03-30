@@ -36,6 +36,13 @@ function App() {
     }
   };
 
+  const connectToDeviceWifi = async () => {
+    fetch('http://192.168.1.194', {
+      method: 'POST',
+      body: '100302005030056'
+    });
+  }
+
   const handleButtonClick = async (value) => {
     if (!writeCharacteristic) {
       setInfo("Error: Not connected to device");
@@ -55,12 +62,18 @@ function App() {
     <>
       <div className="App">
         <div className="App">
-          <button onClick={connectToDevice}>Connect to Device</button>
+          <button onClick={connectToDevice}>Connect to Device in bluetooth</button>
           <p>{info}</p>
           <p>{JSON.stringify(device)}</p>
         </div>
         {/*10030200501455035056*/}
         <br />
+        <div className="App">
+          <button onClick={connectToDeviceWifi}>Connect to Device in Wifi</button>
+          <p>{info}</p>
+          <p>{JSON.stringify(device)}</p>
+        </div>
+        <br/>
         <div className="App">
           <button onClick={() => handleButtonClick(1)}>Allumez LED 1</button>
         </div>
