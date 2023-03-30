@@ -10,7 +10,8 @@ function App() {
     const connectToDevice = async () => {
       try {
         const device = await navigator.bluetooth.requestDevice({
-          filters: [{ services: ['battery_service'] }],
+          //filters: [{ services: ['battery_service'] }],
+            acceptAllDevices: true
         });
 
         setDevice(device);
