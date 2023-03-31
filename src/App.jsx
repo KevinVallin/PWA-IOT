@@ -8,6 +8,10 @@ function App() {
   const [info, setInfo] = useState('');
   const [writeCharacteristic, setWriteCharacteristic] = useState(null);
   const [server, setServer] = useState(null);
+  const [redValue, setRedValue] = useState('');
+  const [blueValue, setBlueValue] = useState('');
+  const [greenValue, setGreenValue] = useState('');
+
 
   const connectToDevice = async () => {
     try {
@@ -43,20 +47,36 @@ function App() {
     });
   }
 
-  const handleButtonClick = async (value) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    handleButtonClick(100, redValue, 200, blueValue, 300, greenValue);
+  };
+
+  const handleButtonClick = async (...value) => {
+    let data;
+
+    if (value.length === 1) {
+      //Make value a single string 
+      data = new TextEncoder().encode(value[0]);
+    } else {
+      //Put every argument in single string
+      const concatenatedValue = value.reduce((acc, curr) => acc + curr, '');
+      data = new TextEncoder().encode(concatenatedValue);
+    }
+
     if (!writeCharacteristic) {
       setInfo("Error: Not connected to device");
       return;
     }
 
     try {
-      const data = new TextEncoder().encode(value)
       await writeCharacteristic.writeValue(data);
       setInfo(`Sent value: ${value} && ${JSON.stringify(data)}`);
     } catch (error) {
       setInfo(`Error: ${error.message}`);
     }
   }
+
 
   return (
     <>
@@ -66,26 +86,43 @@ function App() {
           <p>{info}</p>
           <p>{JSON.stringify(device)}</p>
         </div>
-        {/*10030200501455035056*/}
+
         <br />
         <div className="App">
           <button onClick={connectToDeviceWifi}>Connect to Device in Wifi</button>
-          <p>{info}</p>
-          <p>{JSON.stringify(device)}</p>
-        </div>
-        <br/>
-        <div className="App">
-          <button onClick={() => handleButtonClick(1)}>Allumez LED 1</button>
         </div>
         <br />
-        <div className="App">
-          <button onClick={() => handleButtonClick(2)}>Allumez LED 2</button>
+
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>
+              Allumer LED Red :
+              <input type="text" value={redValue} onChange={(event) => setRedValue(event.target.value)} />
+            </label>
+          </div>
+          <div>
+            <label>
+              Allumer LED Blue :
+              <input type="text" value={blueValue} onChange={(event) => setBlueValue(event.target.value)} />
+            </label>
+          </div>
+          <div>
+            <label>
+              Allumer LED Vert :
+              <input type="text" value={greenValue} onChange={(event) => setGreenValue(event.target.value)} />
+            </label>
+          </div>
+          <div>
+            <input type="submit" value="Send Value" />
+          </div>
+        </form>
+
+        <div>
+          <h3>Allumer la chenille</h3>
+          {/* Pin chenille 1002022040340602608018090*/}
+          {/* Pin Simple 100202204034060*/}
+          <button onClick={() => handleButtonClick(10010210203203013040)}>Allumez LED 1</button>
         </div>
-        <br />
-        <div className="App">
-          <button onClick={() => handleButtonClick(3)}>Allumez LED 3</button>
-        </div>
-        <br />
       </div >
     </>
   )
