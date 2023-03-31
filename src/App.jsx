@@ -118,10 +118,10 @@ function App() {
         </form>
 
         <div>
-          <h3>Allumer la chenille</h3>
+          <h3>Lancer la chenille</h3>
           {/* Pin chenille 1002022040340602608018090*/}
           {/* Pin Simple 100202204034060*/}
-          <button onClick={() => handleButtonClick(10010210203203013040)}>Allumez LED 1</button>
+          <button onClick={() => handleButtonClick(100102102032030)}>Cliquez sur moi !</button>
         </div>
       </div >
     </>
